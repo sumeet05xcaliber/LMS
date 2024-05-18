@@ -2,6 +2,10 @@ const Admin = require('../models/admin');
 const Student = require('../models/student');
 const Teacher = require('../models/teacher');
 const Course = require('../models/course');
+const Chapter=require('../models/chapter');
+const Lesson=require('../models/lesson');
+
+
 
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
@@ -52,22 +56,70 @@ exports.bulkUploadStudents = async (req, res) => {
 };
 
 // Bulk assign/deassign students to/from a course
+// exports.bulkAssignStudents = async (req, res) => {
+//   try {
+//     const { courseId, studentIds } = req.body; // Assuming courseId and studentIds are sent in the request body
+//     const students = await Student.find({ _id: { $in: studentIds } });
+//     const course = await Course.findById(courseId);
+
+//     students.forEach(async (student) => {
+//       if (!student.courses.includes(courseId)) {
+//         student.courses.push({
+//           courseId: courseId,
+//           title: course.title,
+//           description: course.description
+//         });
+//         await student.save();
+//       }
+//     });
+
+//     course.students.push(...studentIds);
+//     await course.save();
+
+//     res.status(200).json({ message: 'Courses assigned successfully to students' });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
+
 exports.bulkAssignStudents = async (req, res) => {
   try {
     const { courseId, studentIds } = req.body; // Assuming courseId and studentIds are sent in the request body
-    const students = await Student.find({ _id: { $in: studentIds } });
-    const course = await Course.findById(courseId);
 
-    students.forEach(async (student) => {
-      if (!student.courses.includes(courseId)) {
-        student.courses.push({
-          courseId: courseId,
-          title: course.title,
-          description: course.description
-        });
+    const students = await Student.find({ _id: { $in: studentIds } });
+    const course = await Course.findById(courseId)
+      .populate({
+        path: 'chapters',
+        populate: {
+          path: 'lessons'
+        }
+      });
+
+    const courseDetails = {
+      courseId: course._id,
+      title: course.title,
+      description: course.description,
+      chapters: course.chapters.map(chapter => ({
+        chapterId: chapter._id,
+        title: chapter.title,
+        lessons: chapter.lessons.map(lesson => ({
+          lessonId: lesson._id,
+          title: lesson.title,
+          content: lesson.content,
+          order: lesson.order
+        }))
+      }))
+    };
+
+    for (const student of students) {
+      const existingCourse = student.courses.find(c => c.courseId.toString() === courseId);
+      if (!existingCourse) {
+        student.courses.push(courseDetails);
         await student.save();
       }
-    });
+    }
 
     course.students.push(...studentIds);
     await course.save();
@@ -77,7 +129,6 @@ exports.bulkAssignStudents = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 
 exports.bulkDeassignStudents = async (req, res) => {
@@ -131,22 +182,67 @@ exports.bulkCreateTeachers = async (req, res) => {
 
 
 // Assign/deassign courses to/from teachers
+// exports.assignCoursesToTeachers = async (req, res) => {
+//   try {
+//     const { courseId, teacherIds } = req.body; // Assuming courseId and teacherIds are sent in the request body
+//     const teachers = await Teacher.find({ _id: { $in: teacherIds } });
+//     const course =await Course.findById(courseId);
+
+//     teachers.forEach(async (teacher) => {
+//       if (!teacher.courses.includes(courseId)) {
+//         teacher.courses.push({
+//           courseId:courseId,
+//           title:course.title,
+//           description:course.description
+//         });
+//         await teacher.save();
+//       }
+//     });
+
+//     course.teachers.push(...teacherIds);
+//     await course.save();
+
+//     res.status(200).json({ message: 'Courses assigned successfully to teachers' });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
 exports.assignCoursesToTeachers = async (req, res) => {
   try {
     const { courseId, teacherIds } = req.body; // Assuming courseId and teacherIds are sent in the request body
     const teachers = await Teacher.find({ _id: { $in: teacherIds } });
-    const course =await Course.findById(courseId);
+    const course = await Course.findById(courseId)
+      .populate({
+        path: 'chapters',
+        populate: {
+          path: 'lessons'
+        }
+      });
 
-    teachers.forEach(async (teacher) => {
-      if (!teacher.courses.includes(courseId)) {
-        teacher.courses.push({
-          courseId:courseId,
-          title:course.title,
-          description:course.description
-        });
+    const courseDetails = {
+      courseId: course._id,
+      title: course.title,
+      description: course.description,
+      chapters: course.chapters.map(chapter => ({
+        chapterId: chapter._id,
+        title: chapter.title,
+        lessons: chapter.lessons.map(lesson => ({
+          lessonId: lesson._id,
+          title: lesson.title,
+          content: lesson.content,
+          order: lesson.order
+        }))
+      }))
+    };
+
+    for (const teacher of teachers) {
+      if (!teacher.courses.some(c => c.courseId.toString() === courseId)) {
+        teacher.courses.push(courseDetails);
         await teacher.save();
       }
-    });
+    }
 
     course.teachers.push(...teacherIds);
     await course.save();
@@ -209,5 +305,78 @@ exports.viewAllTeachers = async (req, res) => {
     res.status(200).json(teachers);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+
+exports.addChapter = async (req, res) => {
+  try {
+    const { courseId, title } = req.body;
+
+    const chapter = new Chapter({ title, course: courseId });
+    await chapter.save();
+
+    const course = await Course.findById(courseId);
+    course.chapters.push(chapter._id);
+    await course.save();
+
+    res.status(201).json({ message: 'Chapter added successfully', chapter });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+exports.getChapters = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+
+    const chapters = await Chapter.find({ course: courseId }).populate('lessons');
+
+    res.status(200).json(chapters);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+exports.addLesson = async (req, res) => {
+  try {
+    const { chapterId, title, content, order } = req.body;
+
+    const lesson = new Lesson({ title, content, order, chapter: chapterId });
+    await lesson.save();
+
+    const chapter = await Chapter.findById(chapterId);
+    chapter.lessons.push(lesson._id);
+    await chapter.save();
+
+    res.status(201).json({ message: 'Lesson added successfully', lesson });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+exports.getLessons = async (req, res) => {
+  try {
+    const { chapterId } = req.params;
+
+    const chapter = await Chapter.findById(chapterId).populate('lessons');
+
+    if (!chapter) {
+      return res.status(404).json({ message: 'Chapter not found' });
+    }
+
+    res.status(200).json(chapter.lessons);
+  } catch (error) {
+    res.status500().json({ message: error.message });
   }
 };
