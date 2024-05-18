@@ -6,12 +6,9 @@ const Course = require('../models/course');
 
 exports.getAssignedCoursesforTeacher = async (req, res) => {
   try {
-    const userId = req.cookies.userId;
+    const userId = req.params.userId;
 
-    if (!userId) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
+    
     const teacher = await Teacher.findById(userId).populate('courses');
 
     if (!teacher) {
