@@ -7,16 +7,15 @@ const teacherSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   schoolName: String,
-  schoolId: String,
+  schoolUniqueId: String,
   city: String,
-  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
+  courses: [{
+    _id: false,
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+    title: String,
+    description: String
+  }]
 });
 
-teacherSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
 
 module.exports = mongoose.model('Teacher', teacherSchema);

@@ -8,11 +8,11 @@ const adminSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-adminSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
+// adminSchema.pre('save', async function (next) {
+//   if (this.isModified('password')) {
+//     this.password = await bcrypt.hash(this.password, 10);
+//   }
+//   next();
+// });
 
 module.exports = mongoose.model('Admin', adminSchema);
