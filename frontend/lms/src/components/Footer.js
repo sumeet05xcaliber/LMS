@@ -7,7 +7,7 @@ function Footer() {
     <footer className="bg-gray-800 text-white py-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-lg font-semibold ml-10">
-          LMS - Learning Made Easy
+          LMS - Learning Made Simple
         </div>
         <div className="flex items-center space-x-6 mr-10">
           <span>Connect with me</span>

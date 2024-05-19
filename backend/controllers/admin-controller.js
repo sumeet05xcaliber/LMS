@@ -39,7 +39,6 @@ exports.bulkUploadStudents = async (req, res) => {
     const studentPromises = students.map(async (studentData) => {
       const { name, father, contact, email, password, grade, dob, schoolName,schoolUniqueId, city } = studentData;
       const uniqueStudentId = generateUniqueId(); // Implement a function to generate unique ID
-      // const schoolUniqueId = generateSchoolUniqueId(schoolName); // Implement a function to get/generate unique school ID
 
       const student = new Student({ 
         name, father, contact, email, password, grade, academicYear, dob, uniqueStudentId, schoolName, schoolUniqueId, city 
@@ -378,5 +377,30 @@ exports.getLessons = async (req, res) => {
     res.status(200).json(chapter.lessons);
   } catch (error) {
     res.status500().json({ message: error.message });
+  }
+};
+
+exports.getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find()
+      .populate({
+        path: 'students',
+        select: 'name email grade schoolName uniqueStudentId'
+      })
+      .populate({
+        path: 'teachers',
+        select: 'name email schoolName'
+      })
+      .populate({
+        path: 'chapters',
+        populate: {
+          path: 'lessons',
+          select: 'title content'
+        }
+      });
+
+    res.status(200).json(courses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

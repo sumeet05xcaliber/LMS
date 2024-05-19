@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 function Home_student() {
   const [courses, setCourses] = useState([]);
   const [studentInfo, setStudentInfo] = useState({});
@@ -44,6 +44,11 @@ function Home_student() {
 
   return (
     <div className="container mx-auto py-6">
+      <div className="mt-6 text-center">
+        <Link to="/" className="bg-blue-500 text-white py-2 px-4 rounded">
+          Logout
+        </Link>
+      </div>
       <h1 className="text-2xl font-bold mb-4">Student Information</h1>
       <div className="mb-6 p-4 bg-white shadow-md rounded">
         <p><strong>Name:</strong> {studentInfo.name}</p>
