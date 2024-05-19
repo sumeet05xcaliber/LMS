@@ -59,8 +59,11 @@ function Bulk_assign_students() {
                 courseId: selectedCourse,
                 studentIds: selectedStudents,
             });
+            alert("Students assigned successfully");
+
             setSuccessMessage(response.data.message);
             setErrorMessage('');
+            window.location.href='/home-admin'
         } catch (error) {
             setErrorMessage(error.response ? error.response.data.error : 'Error assigning courses');
             setSuccessMessage('');

@@ -345,12 +345,11 @@ exports.getChapters = async (req, res) => {
 
 
 
-
 exports.addLesson = async (req, res) => {
   try {
-    const { chapterId, title, content, order } = req.body;
+    const { chapterId, content } = req.body;
 
-    const lesson = new Lesson({ title, content, order, chapter: chapterId });
+    const lesson = new Lesson({ content, chapter: chapterId });
     await lesson.save();
 
     const chapter = await Chapter.findById(chapterId);

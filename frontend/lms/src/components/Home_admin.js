@@ -26,6 +26,17 @@ function Home_admin() {
         <Link to="/bulk_deassign_teachers" className="bg-blue-500 text-white py-2 px-4 rounded">
           Bulk Deassign Teachers
         </Link>
+        <Link to="/course_management" className="bg-blue-500 text-white py-2 px-4 rounded">
+          Course Management
+        </Link>
+        <br></br>
+        <Link to="/view-all-students-admin" className="bg-blue-500 text-white py-2 px-4 rounded ">
+          View students info
+        </Link>
+        <Link to='/view-all-teachers-admin' className="bg-blue-500 text-white py-2 px-4 rounded">
+          View Teacher info
+        </Link>
+        
       </div>
     </div>
   )
