@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import companyLogo from '../assets/company_logo.jpg';
 
 function Bulk_assign_students() {
     const [courses, setCourses] = useState([]);
@@ -71,69 +72,102 @@ function Bulk_assign_students() {
     };
 
     return (
+
         <div>
-            <div className="mt-6 text-center">
-        <Link to="/home-admin" className="bg-blue-500 text-white py-2 px-4 rounded">
+            <header className="w-full bg-gradient-to-r from-blue-800 to-blue-400 p-4 flex">
+      <div className="container mx-auto flex items-center">
+        <img src={companyLogo} alt="Company Logo" className="h-8 w-8 mr-2" />
+        <h1 className="text-white text-xl font-bold">Learn-Mate</h1>
+      </div>
+      <div className="mt-6 text-center">
+        <Link to="/home-admin" className="bg-yellow-500 text-white py-2 px-2 rounded">
           Home
         </Link>
       </div>
-            <h2>Bulk Assign Courses</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="course">Select Course:</label>
-                    <select id="course" onChange={handleCourseChange} value={selectedCourse}>
-                        <option value="">Select a course</option>
-                        {courses.map((course) => (
-                            <option key={course._id} value={course._id}>
-                                {course.title}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Select Students:</label>
-                    {students.map((student) => (
-                        <div key={student._id}>
-                            <input
-                                type="checkbox"
-                                id={student._id}
-                                value={student._id}
-                                onChange={handleStudentChange}
-                                checked={selectedStudents.includes(student._id)}
-                            />
-                            <label htmlFor={student._id}>{student.name}</label>
-                            <span>Email: {student.email}</span>
-                            <span>Grade: {student.grade}</span>
-                            <span>Unique ID: {student.uniqueStudentId}</span>
-                            <span>School Name: {student.schoolName}</span>
-                        </div>
-                    ))}
-                </div>
-                <button type="submit">Assign Courses</button>
-            </form>
-            {successMessage && <div>{successMessage}</div>}
-            {errorMessage && <div>{errorMessage}</div>}
-            {selectedCourseData && (
-                <div>
-                    <h3>{selectedCourseData.title}</h3>
-                    <p>{selectedCourseData.description}</p>
-                    <h4>Chapters:</h4>
-                    <ul>
-                        {selectedCourseData.chapters.map((chapter) => (
-                            <li key={chapter._id}>
-                                <h5>{chapter.title}</h5>
-                                <ul>
-                                    {chapter.lessons.map((lesson) => (
-                                        <li key={lesson._id}>
-                                            <strong>{lesson.title}</strong>: {lesson.content}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+    </header>
+            
+    <div className="container mx-auto py-6 flex justify-center">
+  <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 className="text-2xl font-bold mb-4 text-center">Bulk Assign Courses</h2>
+    <form onSubmit={handleSubmit} className="text-center">
+      <div className="mb-4">
+        <label htmlFor="course" className="block mb-2">
+          Select Course:
+        </label>
+        <select
+          id="course"
+          onChange={handleCourseChange}
+          value={selectedCourse}
+          className="border p-2 rounded w-full"
+        >
+          <option value="">Select a course</option>
+          {courses.map((course) => (
+            <option key={course._id} value={course._id}>
+              {course.title}
+            </option>
+          ))}
+        </select>
+      </div>
+      {selectedCourseData && (
+        <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6 mb-4">
+          <h3 className="text-xl font-bold mb-4">{selectedCourseData.title}</h3>
+          <p>{selectedCourseData.description}</p>
+          <h4 className="mt-4">Chapters:</h4>
+          <ul>
+            {selectedCourseData.chapters.map((chapter) => (
+              <li key={chapter._id} className="mt-2">
+                <h5 className="font-bold">{chapter.title}</h5>
+                <ul>
+                  {chapter.lessons.map((lesson) => (
+                    <li key={lesson._id} className="ml-4">
+                      {lesson.content}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="mb-4">
+  <label className="block mb-2 font-bold">Select Students:</label>
+  <div className="text-left">
+    {students.map((student) => (
+      <div key={student._id} className="border p-2 rounded mb-2 bg-gray-100 flex items-center justify-between">
+        <div>
+          <input
+            type="checkbox"
+            id={student._id}
+            value={student._id}
+            onChange={handleStudentChange}
+            checked={selectedStudents.includes(student._id)}
+            className="mr-2"
+          />
+          <label htmlFor={student._id} className="font-bold"></label>
+        </div>
+        <div>
+          <p><span className="font-bold">Name:</span> {student.name}</p>
+
+          <p><span className="font-bold">Email:</span> {student.email}</p>
+          <p><span className="font-bold">Grade:</span> {student.grade}</p>
+          <p><span className="font-bold">Unique ID:</span> {student.uniqueStudentId}</p>
+          <p><span className="font-bold">School Name:</span> {student.schoolName}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+      <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+        Assign Courses
+      </button>
+    </form>
+    {successMessage && <div className="text-green-500 mt-4">{successMessage}</div>}
+    {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
+  </div>
+</div>
+
+
         </div>
     );
 }
