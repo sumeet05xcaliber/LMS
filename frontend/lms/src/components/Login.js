@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import bglogo from '../assets/bgimage.jpg';
 import companyLogo from '../assets/company_logo.jpg';
-
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -41,7 +41,7 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 bg-cover bg-center" style={{backgroundImage: `url(${bglogo})`}}>
       <header className="w-full bg-gradient-to-r from-blue-800 to-blue-400 p-4">
       <div className="container mx-auto flex items-center">
         <img src={companyLogo} alt="Company Logo" className="h-8 w-8 mr-2" />
@@ -50,10 +50,10 @@ function Login() {
     </header>
       <div className="flex justify-center items-center flex-grow">
         <div className="w-full max-w-md">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 className="text-2xl mb-4 text-center">Login</h2>
+          <form className=" bg-blue-950 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 className="text-2xl mb-4 text-center text-white"><span className='bg-yellow-500 px-2 py-2 rounded-lg'>Login</span></h2>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="username">
                 Username
               </label>
               <input
@@ -66,7 +66,7 @@ function Login() {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="password">
                 Password
               </label>
               <input
@@ -80,7 +80,7 @@ function Login() {
             </div>
             <div className="flex justify-between mb-4">
               <button
-                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'admin' && 'opacity-50'}`}
+                className={`bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'admin' && 'opacity-50'}`}
                 type="button"
                 onClick={() => setUserType('admin')}
                 disabled={userType === 'admin'}
@@ -88,7 +88,7 @@ function Login() {
                 Admin
               </button>
               <button
-                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'teacher' && 'opacity-50'}`}
+                className={`bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'teacher' && 'opacity-50'}`}
                 type="button"
                 onClick={() => setUserType('teacher')}
                 disabled={userType === 'teacher'}
@@ -96,7 +96,7 @@ function Login() {
                 Teacher
               </button>
               <button
-                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'student' && 'opacity-50'}`}
+                className={`bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${userType === 'student' && 'opacity-50'}`}
                 type="button"
                 onClick={() => setUserType('student')}
                 disabled={userType === 'student'}
@@ -106,7 +106,7 @@ function Login() {
             </div>
             <div className="flex items-center justify-center">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={handleLogin}
               >

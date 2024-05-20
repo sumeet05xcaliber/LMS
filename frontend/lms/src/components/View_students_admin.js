@@ -81,8 +81,7 @@ function View_students_admin() {
                       <ul className="list-decimal ml-4">
                         {chapter.lessons.map((lesson) => (
                           <li key={lesson.lessonId} className="mt-1">
-                            <span>{lesson.title}</span>
-                            <br />
+                            
                             <span>{lesson.content}</span>
                             <br />
                           </li>
