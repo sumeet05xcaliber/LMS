@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import companyLogo from '../assets/company_logo.jpg';
 
 function CourseManagement() {
     const [courses, setCourses] = useState([]);
@@ -79,112 +81,134 @@ function CourseManagement() {
 
     return (
         <div>
+            <header className="w-full bg-gradient-to-r from-blue-800 to-blue-400 p-4 flex">
+            <div className="container mx-auto flex items-center">
+                <img src={companyLogo} alt="Company Logo" className="h-8 w-8 mr-2" />
+                <h1 className="text-white text-xl font-bold">Learn-Mate</h1>
+            </div>
             <div className="mt-6 text-center">
-                <a href="/home-admin" className="bg-blue-500 text-white py-2 px-4 rounded">
-                    Home
-                </a>
+                <Link to="/home-admin" className="bg-yellow-500 text-white py-2 px-2 rounded">
+                Home
+                </Link>
             </div>
-            <h2>Course Management</h2>
+            </header>
+            
+            <div className="container mx-auto py-6 flex justify-center">
+  <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 className="text-2xl font-bold mb-4 text-center">Course Management</h2>
 
-            <div className="my-4">
-                <h3 className="text-xl font-bold">Create New Course</h3>
-                <div className="flex flex-col space-y-2">
-                    <input
-                        type="text"
-                        name="title"
-                        placeholder="Course Title"
-                        value={newCourse.title}
-                        onChange={handleCourseChange}
-                        className="border p-2 rounded"
-                    />
-                    <input
-                        type="text"
-                        name="description"
-                        placeholder="Course Description"
-                        value={newCourse.description}
-                        onChange={handleCourseChange}
-                        className="border p-2 rounded"
-                    />
-                    <button onClick={createCourse} className="bg-green-500 text-white py-2 px-4 rounded">
-                        Create Course
-                    </button>
-                </div>
-            </div>
+    <div className="my-4">
+      <h3 className="text-xl font-bold mb-2 text-center">Create New Course</h3>
+      <div className="bg-gray-100 border p-4 rounded-lg space-y-2">
+        <input
+          type="text"
+          name="title"
+          placeholder="Course Title"
+          value={newCourse.title}
+          onChange={handleCourseChange}
+          className="border p-2 rounded w-full"
+        />
+        <input
+          type="text"
+          name="description"
+          placeholder="Course Description"
+          value={newCourse.description}
+          onChange={handleCourseChange}
+          className="border p-2 rounded w-full"
+        />
+        <button onClick={createCourse} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full">
+          Create Course
+        </button>
+      </div>
+    </div>
 
-            <div className="my-4">
-                <h3 className="text-xl font-bold">Create New Chapter</h3>
-                <div className="flex flex-col space-y-2">
-                    <select name="courseId" value={newChapter.courseId} onChange={handleChapterChange} className="border p-2 rounded">
-                        <option value="">Select Course</option>
-                        {courses.map((course) => (
-                            <option key={course._id} value={course._id}>
-                                {course.title}
-                            </option>
-                        ))}
-                    </select>
-                    <input
-                        type="text"
-                        name="title"
-                        placeholder="Chapter Title"
-                        value={newChapter.title}
-                        onChange={handleChapterChange}
-                        className="border p-2 rounded"
-                    />
-                    <button onClick={addChapter} className="bg-green-500 text-white py-2 px-4 rounded">
-                        Add Chapter
-                    </button>
-                </div>
-            </div>
+    <div className="my-4">
+      <h3 className="text-xl font-bold mb-2 text-center">Create New Chapter</h3>
+      <div className="bg-gray-100 border p-4 rounded-lg space-y-2">
+        <select
+          name="courseId"
+          value={newChapter.courseId}
+          onChange={handleChapterChange}
+          className="border p-2 rounded w-full"
+        >
+          <option value="">Select Course</option>
+          {courses.map((course) => (
+            <option key={course._id} value={course._id}>
+              {course.title}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          name="title"
+          placeholder="Chapter Title"
+          value={newChapter.title}
+          onChange={handleChapterChange}
+          className="border p-2 rounded w-full"
+        />
+        <button onClick={addChapter} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full">
+          Add Chapter
+        </button>
+      </div>
+    </div>
 
-            <div className="my-4">
-                <h3 className="text-xl font-bold">Create New Lesson</h3>
-                <div className="flex flex-col space-y-2">
-                    <select name="chapterId" value={newLesson.chapterId} onChange={handleLessonChange} className="border p-2 rounded">
-                        <option value="">Select Chapter</option>
-                        {courses.flatMap(course => course.chapters).map((chapter) => (
-                            <option key={chapter._id} value={chapter._id}>
-                                {chapter.title}
-                            </option>
-                        ))}
-                    </select>
-                    <input
-                        type="text"
-                        name="content"
-                        placeholder="Lesson Content"
-                        value={newLesson.content}
-                        onChange={handleLessonChange}
-                        className="border p-2 rounded"
-                    />
-                    <button onClick={addLesson} className="bg-green-500 text-white py-2 px-4 rounded">
-                        Add Lesson
-                    </button>
-                </div>
-            </div>
+    <div className="my-4">
+      <h3 className="text-xl font-bold mb-2 text-center">Create New Lesson</h3>
+      <div className="bg-gray-100 border p-4 rounded-lg space-y-2">
+        <select
+          name="chapterId"
+          value={newLesson.chapterId}
+          onChange={handleLessonChange}
+          className="border p-2 rounded w-full"
+        >
+          <option value="">Select Chapter</option>
+          {courses.flatMap((course) => course.chapters).map((chapter) => (
+            <option key={chapter._id} value={chapter._id}>
+              {chapter.title}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          name="content"
+          placeholder="Lesson Content"
+          value={newLesson.content}
+          onChange={handleLessonChange}
+          className="border p-2 rounded w-full"
+        />
+        <button onClick={addLesson} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 w-full">
+          Add Lesson
+        </button>
+      </div>
+    </div>
 
-            <div>
-                <h2 className="text-2xl font-bold my-4">Existing Courses</h2>
-                {courses.map(course => (
-                    <div key={course._id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-                        <h3 className="text-xl font-bold">{course.title}</h3>
-                        <p className="text-gray-700">{course.description}</p>
-                        <h4 className="text-lg font-semibold mt-2">Chapters:</h4>
-                        <ul className="list-disc ml-5">
-                            {course.chapters.map(chapter => (
-                                <li key={chapter._id} className="mt-2">
-                                    <h5 className="font-semibold">{chapter.title}</h5>
-                                    <ul className="list-decimal ml-5">
-                                        {chapter.lessons.map(lesson => (
-                                            <li key={lesson._id} className="mt-1">
-                                                {lesson.content}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </div>
+    <div>
+      <h2 className="text-2xl font-bold my-4 text-center">Existing Courses</h2>
+      {courses.map((course) => (
+        <div key={course._id} className="bg-gray-100 border p-6 rounded-lg mb-4">
+          <h3 className="text-xl font-bold mb-2">{course.title}</h3>
+          <p className="text-gray-700 mb-4">{course.description}</p>
+          <h4 className="text-lg font-semibold mb-2">Chapters:</h4>
+          <ul className="list-disc ml-5">
+            {course.chapters.map((chapter) => (
+              <li key={chapter._id} className="mt-2">
+                <h5 className="font-semibold">{chapter.title}</h5>
+                <ul className="list-decimal ml-5">
+                  {chapter.lessons.map((lesson) => (
+                    <li key={lesson._id} className="mt-1">
+                      {lesson.content}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
         </div>
     );
 }

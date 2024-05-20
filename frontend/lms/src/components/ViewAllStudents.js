@@ -79,8 +79,6 @@ function ViewAllStudents() {
                       <ul className="list-decimal ml-4">
                         {chapter.lessons.map(lesson => (
                           <li key={lesson.lessonId}>
-                            <span>{lesson.title}</span>
-                            <br />
                             <span>{lesson.content}</span>
                             <br />
                           </li>
