@@ -32,13 +32,13 @@ exports.createCourse = async (req, res) => {
 // Bulk upload students to a course
 exports.bulkUploadStudents = async (req, res) => {
   try {
-    const students = req.body.students; // Assuming students data is sent in the body as an array of student objects
+    const students = req.body.students;
     console.log(students);
     const academicYear = new Date().getFullYear();
 
     const studentPromises = students.map(async (studentData) => {
       const { name, father, contact, email, password, grade, dob, schoolName,schoolUniqueId, city } = studentData;
-      const uniqueStudentId = generateUniqueId(); // Implement a function to generate unique ID
+      const uniqueStudentId = generateUniqueId(); 
 
       const student = new Student({ 
         name, father, contact, email, password, grade, academicYear, dob, uniqueStudentId, schoolName, schoolUniqueId, city 

@@ -10,7 +10,7 @@ function Footer() {
           LMS - Learning Made Simple
         </div>
         <div className="text-center py-4">
-          <p>&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Learn-Mate. All rights reserved.</p>
         </div>
         <div className="flex items-center space-x-6 mr-10">
           <span>Connect with me</span>
